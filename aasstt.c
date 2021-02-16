@@ -24,6 +24,71 @@ int findstart();
 int findend();
 void find_returntype();
 void function_parameter();
+void find_loop();
+void called();
+
+void called(int name)
+{
+    int i=findstart(name);
+    int end = findend(name,i);
+    printf("\n");
+    for(i=i+1;i<end;i++)
+    {
+        int j=0;
+        for(;j<2;j++)
+        {
+            if(strstr(filestring[i],function_name[j])!=NULL)
+            {
+                char news[100];
+                strcpy(news,function_name[j]);
+                strcat(news,"(");
+
+                if(strstr(filestring[i],news)!=NULL)
+                {
+                    printf("%s\n",function_name[j]);
+                }
+            }
+        }
+    }
+}
+
+void find_loop(int starting,int ending)
+{
+     int i=0,end=ending;
+    char *bri="(";
+    char *brf=")";
+    int count =0;
+    for(i=starting;i<end;i++)
+    {
+
+      if(strstr(filestring[i], "if")!=NULL&& strstr(filestring[i], "(")!=NULL && strstr(filestring[i], ")")!=NULL&& strstr(filestring[i], ";")==NULL)
+      {
+          printf("\nif condition : ");
+          for(int j=0;;j++)
+          {
+              if(filestring[i][j]=='(')
+              {
+                  int k=j+1;
+                  for(;;k++)
+                  {
+                      if(filestring[i][k]==')')
+                      {
+                          break;
+                      }
+                      printf("%c",filestring[i][k]);
+                  }
+              }
+              else if(filestring[i][j]==')')
+              {
+                  break;
+              }
+
+          }
+           printf("\n");
+      }
+
+}
+}
 void function_parameter(int number)
 {
 
@@ -79,7 +144,6 @@ void find_returntype(int starting)
     char type[20];
     char c[100];
     strcpy(c,filestring[starting]);
-    printf("\n%s\n",c);
     if(strstr(c, intf) != NULL&& strstr(c, semicolon)== NULL && strstr(c, bracket1)!= NULL&&strstr(c, bracket2)!=NULL)
     {
         strcpy(type,"int");
@@ -291,7 +355,6 @@ int findend(char name[100], int start)
     char *bri="{";
     char *brf="}";
     int count =0;
-    printf("\n%d",line);
     for(i=start;i<line;i++)
     {
 
@@ -306,7 +369,7 @@ int findend(char name[100], int start)
           if(count==0)
           {
               end=i;
-              printf("%d",i);
+
               break ;
           }
       }
@@ -387,5 +450,9 @@ int main()
    findvariable(s,e);
 
    function_parameter(s);
+   find_returntype(s);
+   called(function_name[1]);
+   find_loop(s,e);
    printf("\n%d\n%d",s,e);
 }
+
