@@ -6,6 +6,7 @@ int main()
       FILE *fptr;
       char c[100];
       char *intf="int";
+      char v;
       char *charf = "char";
       char *doublef = "double";
       char *floatf = "float";
